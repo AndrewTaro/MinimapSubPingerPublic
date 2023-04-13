@@ -35,12 +35,13 @@
 		)
 
 		#modded
+		(var _isEnemy:bool = "isEnemy || markerEntity.relation.value == SC.Battle.PLAYER_RELATION.ENEMY" (event "markerEntity.relation.evChanged"))
 		(var markerColorTransform:dict = 
 			"	isSelf				? TWO_TEAMS_COLOR_TRANSFORMS['white'] :
 				tkStatus			? TWO_TEAMS_COLOR_TRANSFORMS['teamkiller'] :
 				isInSameDivision	? TWO_TEAMS_COLOR_TRANSFORMS['division'] :
 				isAlly				? TWO_TEAMS_COLOR_TRANSFORMS['ally'] :
-				isEnemy				? TWO_TEAMS_COLOR_TRANSFORMS['enemy']
+				_isEnemy			? TWO_TEAMS_COLOR_TRANSFORMS['enemy']
 									: TWO_TEAMS_COLOR_TRANSFORMS['white']
 		")
 		#
