@@ -35,6 +35,7 @@
 		)
 
 		#modded
+		(event evMarkerUpdate)
 		(var _isEnemy:bool = "isEnemy || markerEntity.relation.value == SC.Battle.PLAYER_RELATION.ENEMY" (event "markerEntity.relation.evChanged"))
 		(var markerColorTransform:dict = 
 			"	isSelf				? TWO_TEAMS_COLOR_TRANSFORMS['white'] :
@@ -42,8 +43,9 @@
 				isInSameDivision	? TWO_TEAMS_COLOR_TRANSFORMS['division'] :
 				isAlly				? TWO_TEAMS_COLOR_TRANSFORMS['ally'] :
 				_isEnemy			? TWO_TEAMS_COLOR_TRANSFORMS['enemy']
-									: TWO_TEAMS_COLOR_TRANSFORMS['white']
-		")
+									: TWO_TEAMS_COLOR_TRANSFORMS['white']")
+		(dispatch evMarkerUpdate args={} (event "evEnterFrame") (bind enabled "_isEnemy"))
+		(var pingerYaw:number = "radToGrad(markerEntity.mapPosition.yaw)" (event "evMarkerUpdate"))
 		#
 	)
 	(dispatch evShow on='addedToStage')
@@ -59,5 +61,18 @@
 				(color = "0xFFFFFFFF")
 			)
 		)
+		#mod
+		(block
+			(controller $Instance (renderer = 'MapMarkerDirectionalLine')
+				(bind enabled "_isEnemy && _markerType == 'minimap'")
+				(exprs
+					(style
+						(bind rotation "pingerYaw")
+						(bind alpha "2")
+					)
+				)
+			)
+		)
+		#
 	)
 )
