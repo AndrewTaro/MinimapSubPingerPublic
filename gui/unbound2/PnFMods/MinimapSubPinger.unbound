@@ -1,11 +1,8 @@
-(def macro AttentionMarker (_entity:expression, _markerType:str) layout=true
+(def macro AttentionMarker (_markerEntity:expression, _markerType:str) layout=true
 	(scope
 		(event evShow)
-
-		(var markerEntity:gfx = "_entity")
-
-		(macro GET_MARKER_ENTITY_COMPONENT 'timeToLive')
-		(macro SHIP_MARKER_ICON_DATA "markerEntity.minimapAttentionPoint.avatarId")
+		(macro GET_MARKER_ENTITY_COMPONENT  'timeToLive')
+		(macro SHIP_MARKER_ICON_DATA "_markerEntity.minimapAttentionPoint.avatarId")
 		(var relationValue:number = "relationComponent.value")
 		(var isReversedAnim:bool = "relationComponent.value != SC.Battle.PLAYER_RELATION.SELF")
 		(var fxAssetPostfix:str = "isReversedAnim ? '_in' : ''")
