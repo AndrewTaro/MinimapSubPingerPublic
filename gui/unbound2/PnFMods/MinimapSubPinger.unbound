@@ -33,7 +33,7 @@
 
 		#modded
 		(event evMarkerUpdate)
-		(var _isEnemy:bool = "isEnemy || markerEntity.relation.value == SC.Battle.PLAYER_RELATION.ENEMY" (event "markerEntity.relation.evChanged"))
+		(var _isEnemy:bool = "isEnemy || _markerEntity.relation.value == SC.Battle.PLAYER_RELATION.ENEMY" (event "_markerEntity.relation.evChanged"))
 		(var markerColorTransform:dict = 
 			"	isSelf				? TWO_TEAMS_COLOR_TRANSFORMS['white'] :
 				tkStatus			? TWO_TEAMS_COLOR_TRANSFORMS['teamkiller'] :
@@ -42,7 +42,7 @@
 				_isEnemy			? TWO_TEAMS_COLOR_TRANSFORMS['enemy']
 									: TWO_TEAMS_COLOR_TRANSFORMS['white']")
 		(dispatch evMarkerUpdate args={} (event "evEnterFrame") (bind enabled "_isEnemy"))
-		(var pingerYaw:number = "radToGrad(markerEntity.mapPosition.yaw)" (event "evMarkerUpdate"))
+		(var pingerYaw:number = "radToGrad(_markerEntity.mapPosition.yaw)" (event "evMarkerUpdate"))
 		#
 	)
 	(dispatch evShow on='addedToStage')
