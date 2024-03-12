@@ -43,6 +43,7 @@
 									: TWO_TEAMS_COLOR_TRANSFORMS['white']")
 		(dispatch evMarkerUpdate args={} (event "evEnterFrame") (bind enabled "_isEnemy"))
 		(var pingerYaw:number = "radToGrad(_markerEntity.mapPosition.yaw)" (event "evMarkerUpdate"))
+		(var movingYaw:number = "radToGrad(_markerEntity.data.data.vehicleYaw)")
 		#
 	)
 	(dispatch evShow on='addedToStage')
@@ -66,6 +67,17 @@
 					(style
 						(bind rotation "pingerYaw")
 						(bind alpha "2")
+					)
+				)
+			)
+			(controller $Instance (renderer = 'MapMarkerDirectionalLine')
+				(bind enabled "_isEnemy && _markerType == 'minimap'")
+				(exprs
+					(style
+						(bind rotation "movingYaw")
+						(bind alpha "2")
+						(bind scaleX "0.25")
+						(bind scaleY "0.25")
 					)
 				)
 			)
