@@ -44,6 +44,8 @@
 		(dispatch evMarkerUpdate args={} (event "evEnterFrame") (bind enabled "_isEnemy"))
 		(var pingerYaw:number = "radToGrad(_markerEntity.mapPosition.yaw)" (event "evMarkerUpdate"))
 		(var movingYaw:number = "radToGrad(_markerEntity.data.data.vehicleYaw)")
+
+		(var isEnemyPingerOnMap:bool = "_isEnemy && _markerType == 'minimap'")
 		#
 	)
 	(dispatch evShow on='addedToStage')
@@ -51,6 +53,9 @@
 	(block
 		(bind colorTransform "markerColorTransform")
 		(block
+			#mod
+			(bind visible "!isEnemyPingerOnMap")
+			#
 			(style (position = "absolute"))
 			(bind alpha "dotAlpha")
 			(controller $Sector
@@ -61,8 +66,9 @@
 		)
 		#mod
 		(block
+			(bind visible "isEnemyPingerOnMap")
+
 			(controller $Instance (renderer = 'MapMarkerDirectionalLine')
-				(bind enabled "_isEnemy && _markerType == 'minimap'")
 				(exprs
 					(style
 						(bind rotation "pingerYaw")
@@ -70,15 +76,12 @@
 					)
 				)
 			)
-			(controller $Instance (renderer = 'MapMarkerDirectionalLine')
-				(bind enabled "_isEnemy && _markerType == 'minimap'")
-				(exprs
-					(style
-						(bind rotation "movingYaw")
-						(bind alpha "2")
-						(bind scaleX "0.25")
-						(bind scaleY "0.25")
-					)
+			(block
+				(style
+					(bind rotation "movingYaw")
+					(backgroundImage = "'swf:../fla/minimap/minimap.swf:minimap_submarine_last_visible'")
+					(scaleX = 1.3)
+					(scaleY = 1.3)
 				)
 			)
 		)
