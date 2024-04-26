@@ -33,7 +33,9 @@
 
 		#modded
 		(event evMarkerUpdate)
-		(var _isEnemy:bool = "isEnemy || _markerEntity.relation.value == SC.Battle.PLAYER_RELATION.ENEMY" (event "_markerEntity.relation.evChanged"))
+		(var markerRelationComponent:gfx = "_markerEntity && _markerEntity.hasComponent(CC.relation) ? _markerEntity.relation : null" (event "_markerEntity.evAdded"))
+		(var markerRelation:number = "markerRelationComponent ? markerRelationComponent.value : -1" (event "markerRelationComponent.evChanged"))
+		(var _isEnemy:bool = "isEnemy || markerRelation == SC.Battle.PLAYER_RELATION.ENEMY")
 		(var markerColorTransform:dict = 
 			"	isSelf				? TWO_TEAMS_COLOR_TRANSFORMS['white'] :
 				tkStatus			? TWO_TEAMS_COLOR_TRANSFORMS['teamkiller'] :
@@ -42,8 +44,10 @@
 				_isEnemy			? TWO_TEAMS_COLOR_TRANSFORMS['enemy']
 									: TWO_TEAMS_COLOR_TRANSFORMS['white']")
 		(dispatch evMarkerUpdate args={} (event "evEnterFrame") (bind enabled "_isEnemy"))
-		(var pingerYaw:number = "radToGrad(_markerEntity.mapPosition.yaw)" (event "evMarkerUpdate"))
-		(var movingYaw:number = "radToGrad(_markerEntity.data.data.vehicleYaw)")
+		(macro GET_MARKER_ENTITY_COMPONENT  'mapPosition')
+		(macro GET_MARKER_ENTITY_COMPONENT  'data')
+		(var pingerYaw:number = "mapPositionComponent ? radToGrad(mapPositionComponent.yaw) : 0" (event "evMarkerUpdate"))
+		(var movingYaw:number = "dataComponent ? radToGrad(dataComponent.data.vehicleYaw) : 0")
 
 		(var isEnemyPingerOnMap:bool = "_isEnemy && _markerType == 'minimap'")
 		#
